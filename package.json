@@ -1,0 +1,23 @@
+{
+  "name": "Readit",
+  "version": "1.0.0",
+  "description": "Readit application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "watch": "nodemon --exec electron .",
+    "reset": "git reset --hard",
+    "debug": "electron --inspect-brk=5858 ."
+  },
+  "repository": "https://github.com/willahh/readit/",
+  "keywords": [
+    "Electron"
+  ],
+  "devDependencies": {
+    "electron": "^9.0.0",
+    "electron-reload": "^1.5.0",
+    "nodemon": "^2.0.0"
+  },
+  "dependencies": {
+  }
+}
