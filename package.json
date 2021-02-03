@@ -1,7 +1,7 @@
 {
   "name": "Readit",
   "version": "1.0.0",
-  "description": "Readit app",
+  "description": "Readit application",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +9,7 @@
     "reset": "git reset --hard",
     "debug": "electron --inspect-brk=5858 ."
   },
-  "repository": "https://github.com/willahh/readit/",
+  "repository": "https://github.com/willahh/readit",
   "keywords": [
     "Electron"
   ],
@@ -19,5 +19,6 @@
     "nodemon": "^2.0.0"
   },
   "dependencies": {
+    "electron-window-state": "^5.0.3"
   }
 }
