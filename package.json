@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "watch": "nodemon --exec electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "release": "electron-builder build -m -p 'onTagOrDraft'"
   },
   "repository": "https://github.com/willahh/readit",
   "keywords": [
@@ -25,13 +26,14 @@
   "build": {
     "appId": "dev.williamravel.readit",
     "copyright": "Copyright williamravel.dev",
+    "publish": {
+      "provider": "github"
+    },
     "mac": {
-      "category": "public.app-category.productivity",
-      "target": "dmg"
+      "category": "public.app-category.productivity"
     },
     "win": {
-      "target": "zip",
-      "publisher": "williamravel"
+      "target": "zip"
     },
     "linux": {
       "category": "Utility"
