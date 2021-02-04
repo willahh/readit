@@ -1,6 +1,7 @@
 // Modules
 const { app, BrowserWindow, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
+const readItem = require("./readItem");
 
 console.log("Checking ready:", app.isReady());
 
@@ -11,9 +12,9 @@ let mainWindow;
 ipcMain.on("new-item", (e, itemUrl) => {
   console.log(itemUrl);
 
-  setTimeout(() => {
-    e.sender.send("new-item-success", "new item from main process");
-  }, 2000);
+  readItem(itemUrl, (item) => {
+    e.sender.send("new-item-success", item);
+  });
 });
 
 // Create a new BrowserWindow when `app` is ready

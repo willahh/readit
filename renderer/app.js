@@ -42,8 +42,8 @@ itemUrl.addEventListener("keyUp", (e) => {
   }
 });
 
-ipcRenderer.on("new-item-success", (e, data) => {
-  console.log("on:new-item-success", data);
+ipcRenderer.on("new-item-success", (e, newItem) => {
+  console.log("on:new-item-success", newItem);
   toggleModalButton();
   modal.style.display = "none";
   itemUrl.value = "";
