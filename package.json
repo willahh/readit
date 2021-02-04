@@ -6,8 +6,7 @@
   "scripts": {
     "start": "electron .",
     "watch": "nodemon --exec electron .",
-    "reset": "git reset --hard",
-    "debug": "electron --inspect-brk=5858 ."
+    "build": "electron-builder"
   },
   "repository": "https://github.com/willahh/readit",
   "keywords": [
@@ -15,10 +14,27 @@
   ],
   "devDependencies": {
     "electron": "^9.0.0",
+    "electron-builder": "^22.9.1",
     "electron-reload": "^1.5.0",
-    "nodemon": "^2.0.0"
+    "nodemon": "^2.0.0",
+    "win-cert": "electron-builder create-self-signed-cert -p williamravel"
   },
   "dependencies": {
     "electron-window-state": "^5.0.3"
+  },
+  "build": {
+    "appId": "dev.williamravel.readit",
+    "copyright": "Copyright williamravel.dev",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "zip",
+      "publisher": "williamravel"
+    },
+    "linux": {
+      "category": "Utility"
+    }
   }
 }
