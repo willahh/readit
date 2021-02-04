@@ -1,4 +1,5 @@
 const fs = require("fs");
+const {shell} = require('electron');
 let items = document.getElementById("items");
 
 // Get readerJS content
@@ -25,7 +26,9 @@ exports.delete = (itemIndex) => {
   this.save();
   if (this.storage.length) {
     let newSelectedItemIndex = itemIndex === 0 ? 0 : itemIndex - 1;
-    document.getElementsByClassName('read-item')[newSelectedItemIndex].classList.add('selected');
+    document
+      .getElementsByClassName("read-item")
+      [newSelectedItemIndex].classList.add("selected");
   }
 };
 
@@ -62,6 +65,15 @@ exports.changeSelection = (direction) => {
   }
 };
 
+exports.openNative = () => {
+  if (!this.storage.length) {
+    return;
+  }
+  let selectedItem = this.getSelectedItem();
+  let contentURL = selectedItem.node.dataset.url;
+  shell.openExternal(contentURL);
+};
+
 // Open selected item
 exports.open = () => {
   if (!this.storage.length) {
@@ -69,7 +81,6 @@ exports.open = () => {
   }
   let selectedItem = this.getSelectedItem();
   let contentURL = selectedItem.node.dataset.url;
-  console.log("contentURL", contentURL);
 
   // Open item in proxy BrowserWindow
   let readerWin = window.open(

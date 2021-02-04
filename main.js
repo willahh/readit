@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const readItem = require("./readItem");
+const appMenu = require('./menu');
 
 console.log("Checking ready:", app.isReady());
 
@@ -23,7 +24,6 @@ function createWindow() {
     defaultWidth: 800,
     defaultHeight: 650,
   });
-  console.log("state", state);
   mainWindow = new BrowserWindow({
     x: state.x,
     y: state.y,
@@ -34,35 +34,17 @@ function createWindow() {
     minHeight: 350,
     webPreferences: { nodeIntegration: true },
   });
+  appMenu(mainWindow.webContents)
   mainWindow.loadFile("renderer/main.html");
 
   state.manage(mainWindow);
 
   // Open DevTools - Remove for PRODUCTION!
-  mainWindow.webContents.openDevTools();
-
-  // Listen for window being closed
-  // mainWindow.on("closed", () => {
-  //   mainWindow = null;
-  // });
+   // mainWindow.webContents.openDevTools();
 }
 
 // Electron `app` is ready
 app.on("ready", () => {
   console.log("App is ready !");
-  // console.log("desktop: ", app.getPath("desktop"));
-  // console.log("music: ", app.getPath("music"));
-  // console.log("temp: ", app.getPath("temp"));
-  // console.log("userData: ", app.getPath("userData"));
   createWindow();
 });
-
-// // Quit when all windows are closed - (Not macOS - Darwin)
-// app.on("window-all-closed", () => {
-//   if (process.platform !== "darwin") app.quit();
-// });
-
-// // When app icon is clicked and app is running, (macOS) recreate the BrowserWindow
-// app.on("activate", () => {
-//   if (mainWindow === null) createWindow();
-// });

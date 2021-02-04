@@ -8,6 +8,27 @@ let addItem = document.getElementById("add-item");
 let itemUrl = document.getElementById("url");
 let search = document.getElementById("search");
 
+ipcRenderer.on("menu-show-modal", () => {
+  showModal.click();
+});
+
+ipcRenderer.on("menu-open-item", () => {
+  items.open();
+});
+
+ipcRenderer.on("menu-delete-item", () => {
+  let selectedItem = items.getSelectedItem();
+  items.delete(selectedItem.index);
+});
+
+ipcRenderer.on("menu-open-item-native", () => {
+  items.openNative();
+});
+
+ipcRenderer.on("menu-focus-search", () => {
+  search.focus();
+});
+
 // Filter items
 search.addEventListener("keyup", (e) => {
   Array.from(document.getElementsByClassName("read-item")).forEach((item) => {
@@ -17,12 +38,12 @@ search.addEventListener("keyup", (e) => {
 });
 
 // Navigation item selection with up/down arrows
-document.addEventListener('keydown', e => {
-  console.log('e.key', e.key);
-  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+document.addEventListener("keydown", (e) => {
+  console.log("e.key", e.key);
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
     items.changeSelection(e.key);
   }
-})
+});
 
 const toggleModalButton = () => {
   if (addItem.disabled) {
