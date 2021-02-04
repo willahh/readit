@@ -1,4 +1,5 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, TouchBarOtherItemsProxy } = require("electron");
+const items = require("./items");
 
 let showModal = document.getElementById("show-modal");
 let closeModal = document.getElementById("close-modal");
@@ -44,7 +45,7 @@ itemUrl.addEventListener("keyUp", (e) => {
 
 ipcRenderer.on("new-item-success", (e, newItem) => {
   console.log("on:new-item-success", newItem);
-  toggleModalButton();
+  items.addItem(newItem, true);
   modal.style.display = "none";
   itemUrl.value = "";
 });
