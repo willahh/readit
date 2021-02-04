@@ -9,29 +9,56 @@ fs.readFile(`${__dirname}/reader.js`, (err, data) => {
 
 // Storage in localStorage
 exports.storage = JSON.parse(localStorage.getItem("readit-items")) || [];
+
+// Listen for "done" message from reader windoww
+window.addEventListener("message", (e) => {
+  // Delete item at given index
+  if (e.data.action == "delete-reader-item") {
+    e.source.close();
+    this.delete(e.data.itemIndex);
+  }
+});
+
+exports.delete = (itemIndex) => {
+  items.removeChild(items.childNodes[itemIndex]);
+  this.storage.splice(itemIndex, 1);
+  this.save();
+  if (this.storage.length) {
+    let newSelectedItemIndex = itemIndex === 0 ? 0 : itemIndex - 1;
+    document.getElementsByClassName('read-item')[newSelectedItemIndex].classList.add('selected');
+  }
+};
+
+exports.getSelectedItem = () => {
+  let currentItem = document.getElementsByClassName("read-item selected")[0];
+
+  let itemIndex = 0;
+  let child = currentItem;
+  while ((child = child.previousElementSibling) != null) itemIndex++;
+  return { node: currentItem, index: itemIndex };
+};
+
 exports.save = () => {
   localStorage.setItem("readit-items", JSON.stringify(this.storage));
 };
 
 // Select item
 exports.select = (e) => {
-  document
-    .getElementsByClassName("read-item selected")[0]
-    .classList.remove("selected");
+  this.getSelectedItem().node.classList.remove("selected");
   e.currentTarget.classList.add("selected");
 };
 
 // Move to newly selected item
 exports.changeSelection = (direction) => {
   console.log("changeSelection");
-  let currentItem = document.getElementsByClassName("read-item selected")[0];
+  let currentItem = this.getSelectedItem();
 
-  if (direction == "ArrowUp" && currentItem.previousElementSibling) {
-    currentItem.classList.remove("selected");
-    currentItem.previousElementSibling.classList.add("selected");
-  } else if (direction == "ArrowDown" && currentItem.nextElementSibling) {
-    currentItem.classList.remove("selected");
-    currentItem.nextElementSibling.classList.add("selected");
+  if (direction == "ArrowUp" && currentItem.node.previousElementSibling) {
+    currentItem.node.classList.remove("selected");
+    currentItem.node.previousElementSibling.classList.add("selected");
+  } else if (direction == "ArrowDown" && currentItem.node.nextElementSibling) {
+    currentItem.node.classList.remove("selected");
+    currentItem.node.nextElementSibling.classList.add("selected");
   }
 };
 
@@ -40,8 +67,8 @@ exports.open = () => {
   if (!this.storage.length) {
     return;
   }
-  let selectedItem = document.getElementsByClassName("read-item selected")[0];
-  let contentURL = selectedItem.dataset.url;
+  let selectedItem = this.getSelectedItem();
+  let contentURL = selectedItem.node.dataset.url;
   console.log("contentURL", contentURL);
 
   // Open item in proxy BrowserWindow
@@ -59,12 +86,10 @@ exports.open = () => {
   );
 
   // Inject js
-  readerWin.eval(readerJS);
+  readerWin.eval(readerJS.replace("{{index}}", selectedItem.index));
 };
 
 exports.addItem = (item, isNew = false) => {
-  console.log("addItem", item);
-
   let itemNode = document.createElement("div");
   itemNode.setAttribute("class", "read-item");
   itemNode.setAttribute("data-url", item.url);
