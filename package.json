@@ -1,13 +1,13 @@
 {
   "name": "Readit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Readit application",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "watch": "nodemon --exec electron .",
     "build": "electron-builder",
-    "release": "electron-builder build -m -p 'onTagOrDraft'"
+    "release": "electron-builder build -m -p 'always'"
   },
   "repository": "https://github.com/willahh/readit",
   "keywords": [
@@ -21,6 +21,8 @@
     "win-cert": "electron-builder create-self-signed-cert -p williamravel"
   },
   "dependencies": {
+    "electron-log": "^4.3.1",
+    "electron-updater": "^4.3.5",
     "electron-window-state": "^5.0.3"
   },
   "build": {

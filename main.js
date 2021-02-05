@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const readItem = require("./readItem");
 const appMenu = require('./menu');
+const updater = require('./updater');
 
 console.log("Checking ready:", app.isReady());
 
@@ -20,6 +21,9 @@ ipcMain.on("new-item", (e, itemUrl) => {
 
 // Create a new BrowserWindow when `app` is ready
 function createWindow() {
+  // Check for app updates after 3 secondes
+  setTimeout(updater, 3000);
+  
   let state = windowStateKeeper({
     defaultWidth: 800,
     defaultHeight: 650,
